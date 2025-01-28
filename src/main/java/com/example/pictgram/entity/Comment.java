@@ -7,6 +7,8 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
 
@@ -25,8 +27,16 @@ public class Comment extends AbstractEntity implements Serializable {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
-	@Column(nullable = false)
-	private Long topicId;
+//	@Column(nullable = false)
+//	private Long topicId;
+	
+    @ManyToOne //多対1
+    @JoinColumn(name = "topicId")
+    private Topic topic;
+    
+    @ManyToOne //多対1
+    @JoinColumn(name = "userId")
+    private User user;
 
 	@Column(nullable = false, length = 1000)
 	private String description;

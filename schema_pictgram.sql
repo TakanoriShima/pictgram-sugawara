@@ -43,6 +43,7 @@ ALTER TABLE favorites ADD CONSTRAINT FK_favorites_topics FOREIGN KEY (topic_id) 
 CREATE TABLE IF NOT EXISTS comments (
   id SERIAL NOT NULL,
   topic_id INT NOT NULL,
+  user_id INT NOT NULL,
   description VARCHAR(1000) NOT NULL,
   created_at TIMESTAMP NOT NULL,
   updated_at TIMESTAMP NOT NULL,

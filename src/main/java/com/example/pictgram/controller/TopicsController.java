@@ -69,6 +69,14 @@ public class TopicsController {
 			list.add(form);
 		}
 		model.addAttribute("list", list);
+		
+//		for(Topic topic: topics) {
+//			List<Comment> comments = topic.getComments();
+//			for(Comment comment: comments) {
+//				String name = repository.findById(comment.getTopicId()).get().getUser().getName();
+//				System.out.println("名前: " + name);
+//			}
+//		}
 
 		return "topics/index";
 	}
