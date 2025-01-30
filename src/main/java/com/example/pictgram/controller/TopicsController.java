@@ -90,6 +90,7 @@ public class TopicsController {
 
 		modelMapper.typeMap(Favorite.class, FavoriteForm.class)
 				.addMappings(mapper -> mapper.skip(FavoriteForm::setTopic));
+		
 
 		boolean isImageLocal = false;
 		if (imageLocal != null) {

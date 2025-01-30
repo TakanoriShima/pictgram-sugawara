@@ -117,7 +117,6 @@ nav.navbar {
       overflow: auto;
       white-space: pre-wrap;
       word-wrap: break-word;
-      background-color: white;
       border: none; }
     .topics-index-wrapper main .comments ul li {
       list-style: none; }
@@ -128,5 +127,12 @@ nav.navbar {
 #calendar a {
   color: #337ab7;
   text-decoration: none; }
+
+.comments li {
+  border: solid 1px;
+  border-radius: 16px;
+  padding: 5px;
+  margin-right: 30px;
+  background-color: #00800029 !important; }
 
 /*# sourceMappingURL=style.css.map */

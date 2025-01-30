@@ -26,9 +26,6 @@ public class Comment extends AbstractEntity implements Serializable {
 	@SequenceGenerator(name = "comment_id_seq")
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
-
-//	@Column(nullable = false)
-//	private Long topicId;
 	
     @ManyToOne //多対1
     @JoinColumn(name = "topicId")

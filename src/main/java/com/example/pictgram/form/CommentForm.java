@@ -1,5 +1,7 @@
 package com.example.pictgram.form;
 
+import java.util.Date;
+
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Size;
 
@@ -18,4 +20,6 @@ public class CommentForm {
 	@NotEmpty
 	@Size(max = 1000)
 	private String description;
+	
+	private Date createdAt;
 }
