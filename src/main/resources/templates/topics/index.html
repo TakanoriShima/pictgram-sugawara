@@ -28,7 +28,7 @@
                 <a th:id="${topic.id}"></a>
                 <div class="col-md-6 mx-auto">
                     <main>
-                        <h2 class="author" th:text="${topic.user.name}"></h2>
+                        <a th:href="@{/users/{id}(id=${topic.userId})}"><h2 class="author" th:text="${topic.user.name}"></h2></a>
                         <img src="" th:if="${@environment.getProperty('image.local')}" th:src="${topic.imageData}" class="image" />
                         <img src="" th:unless="${@environment.getProperty('image.local')}" th:src="${topic.path}" class="image" />
                         <div class="icons">
