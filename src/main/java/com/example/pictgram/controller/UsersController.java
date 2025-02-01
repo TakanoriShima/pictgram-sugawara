@@ -82,7 +82,7 @@ public class UsersController {
 	@GetMapping("/users/{id}")
 	public String show(@PathVariable("id") Long id, Model model) {
 		
-		User user = repository.getById(id);
+		User user = repository.findById(id).get();
 		UserInf user_inf = (UserInf) user;
 
 		List<Topic> topic_entities = user.getTopics();
