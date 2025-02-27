@@ -29,7 +29,7 @@ public class SecurityConfig {
 	private FormAuthenticationProvider authenticationProvider;
 
 	@Bean
-	public SecurityFilterChain securityFilterChain(HttpSecurity http, HandlerMappingIntrospector introspector)
+	SecurityFilterChain securityFilterChain(HttpSecurity http, HandlerMappingIntrospector introspector)
 			throws Exception {
 		MvcRequestMatcher h2RequestMatcher = new MvcRequestMatcher(introspector, "/**");
 		h2RequestMatcher.setServletPath("/h2-console");

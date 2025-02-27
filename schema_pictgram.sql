@@ -42,14 +42,15 @@ ALTER TABLE favorites ADD CONSTRAINT FK_favorites_topics FOREIGN KEY (topic_id) 
 
 CREATE TABLE IF NOT EXISTS comments (
   id SERIAL NOT NULL,
-  topic_id INT NOT NULL,
   user_id INT NOT NULL,
+  topic_id INT NOT NULL,
   description VARCHAR(1000) NOT NULL,
   created_at TIMESTAMP NOT NULL,
   updated_at TIMESTAMP NOT NULL,
   PRIMARY KEY (id)
 );
 
+ALTER TABLE comments ADD CONSTRAINT FK_comments_users FOREIGN KEY (user_id) REFERENCES users;
 ALTER TABLE comments ADD CONSTRAINT FK_comments_topics FOREIGN KEY (topic_id) REFERENCES topics;
 
 GRANT ALL PRIVILEGES ON ALL TABLES IN SCHEMA public TO pictgram;
