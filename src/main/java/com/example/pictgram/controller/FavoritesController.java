@@ -21,9 +21,12 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.example.pictgram.entity.Favorite;
 import com.example.pictgram.entity.Topic;
+import com.example.pictgram.entity.User;
 import com.example.pictgram.entity.UserInf;
 import com.example.pictgram.form.TopicForm;
 import com.example.pictgram.repository.FavoriteRepository;
+import com.example.pictgram.repository.TopicRepository;
+import com.example.pictgram.repository.UserRepository;
 
 @Controller
 public class FavoritesController {
@@ -34,16 +37,22 @@ public class FavoritesController {
 	private FavoriteRepository repository;
 	@Autowired
 	private TopicsController topicsController;
+	@Autowired
+	private UserRepository userRepository;
+	@Autowired
+	private TopicRepository topicRepository;
 
 	@GetMapping("/favorites")
 	public String index(Principal principal, Model model) throws IOException {
 		Authentication authentication = (Authentication) principal;
-		UserInf user = (UserInf) authentication.getPrincipal();
-		List<Favorite> topics = repository.findByUserIdOrderByUpdatedAtDesc(user.getUserId());
+		UserInf userInf = (UserInf) authentication.getPrincipal();
+		Long userId = userInf.getUserId();
+		User user = userRepository.findById(userId).get();
+		List<Favorite> favorites = repository.findByUserOrderByUpdatedAtDesc(user);
 		List<TopicForm> list = new ArrayList<>();
-		for (Favorite entity : topics) {
-			Topic topicEntity = entity.getTopic();
-			TopicForm form = topicsController.getTopic(user, topicEntity);
+		for (Favorite favorite : favorites) {
+			Topic topic = favorite.getTopic();
+			TopicForm form = topicsController.getTopic(user, topic);
 			list.add(form);
 		}
 		model.addAttribute("list", list);
@@ -55,14 +64,16 @@ public class FavoritesController {
 	public String create(Principal principal, @RequestParam("topic_id") long topicId, RedirectAttributes redirAttrs,
 			Locale locale) {
 		Authentication authentication = (Authentication) principal;
-		UserInf user = (UserInf) authentication.getPrincipal();
-		Long userId = user.getUserId();
-		List<Favorite> results = repository.findByUserIdAndTopicId(userId, topicId);
+		UserInf userInf = (UserInf) authentication.getPrincipal();
+		Long userId = userInf.getUserId();
+		User user = userRepository.findByUserId(userId).get();
+		Topic topic = topicRepository.findById(topicId).get();
+		List<Favorite> results = repository.findByUserAndTopic(user, topic);
 		if (results.size() == 0) {
-			Favorite entity = new Favorite();
-			entity.setUserId(userId);
-			entity.setTopicId(topicId);
-			repository.saveAndFlush(entity);
+			Favorite favorite = new Favorite();
+			favorite.setUser(user);
+			favorite.setTopic(topic);
+			repository.saveAndFlush(favorite);
 
 			redirAttrs.addFlashAttribute("hasMessage", true);
 			redirAttrs.addFlashAttribute("class", "alert-info");
@@ -78,11 +89,13 @@ public class FavoritesController {
 	public String destroy(Principal principal, @RequestParam("topic_id") long topicId, RedirectAttributes redirAttrs,
 			Locale locale) {
 		Authentication authentication = (Authentication) principal;
-		UserInf user = (UserInf) authentication.getPrincipal();
-		Long userId = user.getUserId();
-		List<Favorite> results = repository.findByUserIdAndTopicId(userId, topicId);
+		UserInf userInf = (UserInf) authentication.getPrincipal();
+		Long userId = userInf.getUserId();
+		User user = userRepository.findByUserId(userId).get();
+		Topic topic = topicRepository.findById(topicId).get();
+		List<Favorite> results = repository.findByUserAndTopic(user, topic);
 		if (results.size() == 1) {
-			repository.deleteByUserIdAndTopicId(user.getUserId(), topicId);
+			repository.deleteByUserAndTopic(user, topic);
 
 			redirAttrs.addFlashAttribute("hasMessage", true);
 			redirAttrs.addFlashAttribute("class", "alert-info");

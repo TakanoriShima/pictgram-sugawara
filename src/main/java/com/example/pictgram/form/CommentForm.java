@@ -5,6 +5,7 @@ import java.util.Date;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Size;
 
+import com.example.pictgram.entity.Topic;
 import com.example.pictgram.entity.User;
 
 import lombok.Data;
@@ -13,13 +14,13 @@ import lombok.Data;
 public class CommentForm {
 	private Long id;
 
-	private Long topicId;
-	
+	private Topic topic;
+
 	private User user;
 
 	@NotEmpty
 	@Size(max = 1000)
 	private String description;
-	
+
 	private Date createdAt;
 }

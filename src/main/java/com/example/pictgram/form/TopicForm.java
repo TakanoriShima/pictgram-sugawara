@@ -7,6 +7,7 @@ import jakarta.validation.constraints.Size;
 
 import org.springframework.web.multipart.MultipartFile;
 
+import com.example.pictgram.entity.User;
 import com.example.pictgram.validation.constraints.ImageByte;
 import com.example.pictgram.validation.constraints.ImageNotEmpty;
 
@@ -17,7 +18,7 @@ public class TopicForm {
 
 	private Long id;
 
-	private Long userId;
+	private User user;
 
 	@ImageNotEmpty
 	@ImageByte(max = 2000000)
@@ -31,7 +32,7 @@ public class TopicForm {
 	@Size(max = 1000)
 	private String description;
 
-	private UserForm user;
+	private UserForm userForm;
 
 	private List<FavoriteForm> favorites;
 

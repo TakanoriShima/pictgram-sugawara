@@ -1,13 +1,16 @@
 package com.example.pictgram.form;
 
+import com.example.pictgram.entity.Topic;
+import com.example.pictgram.entity.User;
+
 import lombok.Data;
 
 @Data
 public class FavoriteForm {
 
-	private Long userId;
+	private User user;
 
-	private Long topicId;
+	private Topic topic;
 
-	private TopicForm topic;
+	private TopicForm topicForm;
 }

@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
-import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -38,10 +37,7 @@ public class UsersController {
 	private PasswordEncoder passwordEncoder;
 	@Autowired
 	private UserRepository repository;
-	
-	@Autowired
-	private ModelMapper modelMapper;
-	
+		
 	@Autowired
 	private TopicsController controller;
 

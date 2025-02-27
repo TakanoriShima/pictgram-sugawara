@@ -34,12 +34,14 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.example.pictgram.entity.Comment;
 import com.example.pictgram.entity.Favorite;
 import com.example.pictgram.entity.Topic;
+import com.example.pictgram.entity.User;
 import com.example.pictgram.entity.UserInf;
 import com.example.pictgram.form.CommentForm;
 import com.example.pictgram.form.FavoriteForm;
 import com.example.pictgram.form.TopicForm;
 import com.example.pictgram.form.UserForm;
 import com.example.pictgram.repository.TopicRepository;
+import com.example.pictgram.repository.UserRepository;
 
 @Controller
 public class TopicsController {
@@ -51,6 +53,8 @@ public class TopicsController {
 	private ModelMapper modelMapper;
 	@Autowired
 	private TopicRepository repository;
+	@Autowired
+	private UserRepository userRepository;
 	@Autowired
 	private HttpServletRequest request;
 
@@ -69,28 +73,27 @@ public class TopicsController {
 			list.add(form);
 		}
 		model.addAttribute("list", list);
-		
-//		for(Topic topic: topics) {
-//			List<Comment> comments = topic.getComments();
-//			for(Comment comment: comments) {
-//				String name = repository.findById(comment.getTopicId()).get().getUser().getName();
-//				System.out.println("名前: " + name);
-//			}
-//		}
+
+		//		for(Topic topic: topics) {
+		//			List<Comment> comments = topic.getComments();
+		//			for(Comment comment: comments) {
+		//				String name = repository.findById(comment.getTopicId()).get().getUser().getName();
+		//				System.out.println("名前: " + name);
+		//			}
+		//		}
 
 		return "topics/index";
 	}
 
-	public TopicForm getTopic(UserInf user, Topic entity) throws FileNotFoundException, IOException {
+	public TopicForm getTopic(UserInf userInf, Topic entity) throws FileNotFoundException, IOException {
 		modelMapper.getConfiguration().setAmbiguityIgnored(true);
 		modelMapper.typeMap(Topic.class, TopicForm.class).addMappings(mapper -> mapper.skip(TopicForm::setUser));
 
 		modelMapper.typeMap(Topic.class, TopicForm.class).addMappings(mapper -> mapper.skip(TopicForm::setFavorites));
-		modelMapper.typeMap(Topic.class, TopicForm.class).addMappings(mapper -> mapper.skip(TopicForm::setComments)); 
+		modelMapper.typeMap(Topic.class, TopicForm.class).addMappings(mapper -> mapper.skip(TopicForm::setComments));
 
 		modelMapper.typeMap(Favorite.class, FavoriteForm.class)
 				.addMappings(mapper -> mapper.skip(FavoriteForm::setTopic));
-		
 
 		boolean isImageLocal = false;
 		if (imageLocal != null) {
@@ -116,27 +119,29 @@ public class TopicsController {
 			}
 		}
 
+		Long userId = userInf.getUserId();
+		User user = userRepository.findById(userId).get();
 		UserForm userForm = modelMapper.map(entity.getUser(), UserForm.class);
-		form.setUser(userForm);
+		form.setUser(user);
+		form.setUserForm(userForm);
 
 		List<FavoriteForm> favorites = new ArrayList<FavoriteForm>();
 		for (Favorite favoriteEntity : entity.getFavorites()) {
 			FavoriteForm favorite = modelMapper.map(favoriteEntity, FavoriteForm.class);
 			favorites.add(favorite);
-			if (user.getUserId().equals(favoriteEntity.getUserId())) {
+			if (user.getUserId().equals(favoriteEntity.getUser().getUserId())) {
 				form.setFavorite(favorite);
 			}
 		}
 		form.setFavorites(favorites);
-		
+
 		List<CommentForm> comments = new ArrayList<CommentForm>();
-		
+
 		for (Comment commentEntity : entity.getComments()) {
 			CommentForm comment = modelMapper.map(commentEntity, CommentForm.class);
 			comments.add(comment);
 		}
 		form.setComments(comments);
-		
 
 		return form;
 	}
@@ -179,7 +184,7 @@ public class TopicsController {
 		boolean isImageLocal = false;
 		if (imageLocal != null) {
 			isImageLocal = new Boolean(imageLocal);
-//			isImageLocal = true;
+			//			isImageLocal = true;
 		}
 
 		Topic entity = new Topic();

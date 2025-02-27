@@ -6,14 +6,17 @@ import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import com.example.pictgram.entity.Favorite;
+import com.example.pictgram.entity.Topic;
+import com.example.pictgram.entity.User;
 
 public interface FavoriteRepository extends JpaRepository<Favorite, Long> {
 
 	public Optional<Favorite> findById(Long id);
 
-	public List<Favorite> findByUserIdOrderByUpdatedAtDesc(Long userId);
+	public List<Favorite> findByUserOrderByUpdatedAtDesc(User user);
 
-	public List<Favorite> findByUserIdAndTopicId(Long userId, Long topicId);
+	public List<Favorite> findByUserAndTopic(User user, Topic topic);
 
-	public void deleteByUserIdAndTopicId(Long userId, Long topicId);
+	public void deleteByUserAndTopic(User user, Topic topic);
+
 }

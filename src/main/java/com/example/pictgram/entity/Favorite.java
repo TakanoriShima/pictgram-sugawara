@@ -2,7 +2,6 @@ package com.example.pictgram.entity;
 
 import java.io.Serializable;
 
-import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -27,13 +26,13 @@ public class Favorite extends AbstractEntity implements Serializable {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
-	@Column(nullable = false)
-	private Long userId;
 
-	@Column(nullable = false)
-	private Long topicId;
+    @ManyToOne //多対1
+    @JoinColumn(name = "topicId")
+    private Topic topic;
+    
+    @ManyToOne //多対1
+    @JoinColumn(name = "userId")
+    private User user;
 
-	@ManyToOne
-	@JoinColumn(name = "topicId", insertable = false, updatable = false)
-	private Topic topic;
 }

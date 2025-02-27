@@ -37,24 +37,26 @@ public class CommentsController {
 
 	@Autowired
 	private CommentRepository repository;
-	
+
 	@Autowired
 	private TopicRepository topicRepository;
-	
+
 	@Autowired
 	private UserRepository userRepository;
-	
+
 	@GetMapping("/topics/{topicId}/comments/new")
 	public String newComment(@PathVariable("topicId") long topicId, Model model) {
+		Topic topic = topicRepository.findById(topicId).get();
 		CommentForm form = new CommentForm();
-		form.setTopicId(topicId);
+		form.setTopic(topic);
 		model.addAttribute("form", form);
 
 		return "comments/new";
 	}
 
 	@PostMapping("/topics/{topicId}/comment")
-	public String create(Principal principal, @PathVariable("topicId") long topicId, @Validated @ModelAttribute("form") CommentForm form,
+	public String create(Principal principal, @PathVariable("topicId") long topicId,
+			@Validated @ModelAttribute("form") CommentForm form,
 			BindingResult result, Model model, RedirectAttributes redirAttrs, Locale locale) {
 		if (result.hasErrors()) {
 			model.addAttribute("hasMessage", true);
@@ -67,12 +69,12 @@ public class CommentsController {
 		UserInf user_inf = (UserInf) authentication.getPrincipal();
 		String username = user_inf.getUsername();
 		User user = userRepository.findByUsername(username);
-		
-//		entity.setTopicId(topicId);
+
+		//		entity.setTopicId(topicId);
 		Topic topic = topicRepository.findById(topicId).get();
 		entity.setTopic(topic);
 		entity.setUser(user);
-		
+
 		repository.saveAndFlush(entity);
 
 		redirAttrs.addFlashAttribute("hasMessage", true);

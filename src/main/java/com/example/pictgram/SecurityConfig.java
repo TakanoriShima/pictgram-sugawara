@@ -17,14 +17,13 @@ import org.springframework.security.web.util.matcher.RequestMatcher;
 import org.springframework.web.servlet.handler.HandlerMappingIntrospector;
 
 import com.example.pictgram.filter.FormAuthenticationProvider;
-import com.example.pictgram.repository.UserRepository;
 
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
 
-	@Autowired
-	private UserRepository repository;
+//	@Autowired
+//	private UserRepository repository;
 	@Autowired
 	private FormAuthenticationProvider authenticationProvider;
 
